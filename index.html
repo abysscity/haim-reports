@@ -35,22 +35,87 @@
             transition: 0.3s ease;
             box-shadow: 2px 0 10px rgba(0,0,0,0.1);
             padding-top: 70px;
+            z-index: 1000;
         }
 
         .sidebar.active {
             left: 0;
         }
 
-        .sidebar a {
+        .sidebar-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar-menu > li {
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .sidebar-menu a, .sidebar-menu .menu-item {
             display: block;
             padding: 14px 24px;
             text-decoration: none;
             color: #333;
             font-size: 16px;
+            cursor: pointer;
+            transition: background 0.2s;
         }
 
-        .sidebar a:hover {
+        .sidebar-menu a:hover, .sidebar-menu .menu-item:hover {
             background: #f3f3f3;
+        }
+
+        .menu-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .menu-item .arrow {
+            transition: transform 0.3s;
+        }
+
+        .menu-item.active .arrow {
+            transform: rotate(90deg);
+        }
+
+        .submenu {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            background: #f9f9f9;
+        }
+
+        .submenu.active {
+            max-height: 200px;
+        }
+
+        .submenu a {
+            padding: 12px 24px 12px 48px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .submenu a:hover {
+            background: #efefef;
+        }
+
+        .sidebar .logout-btn {
+            margin: 20px 24px;
+            padding: 12px;
+            background: #8b7355;
+            color: #f5f0e8;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: calc(100% - 48px);
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .sidebar .logout-btn:hover {
+            background: #6d5942;
         }
 
         .overlay {
@@ -61,7 +126,7 @@
             bottom: 0;
             background: rgba(0,0,0,0.3);
             display: none;
-            z-index: 1000;
+            z-index: 999;
         }
 
         /* 메인 컨텐츠 */
@@ -94,6 +159,20 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+        }
+
+        .calendar-header button {
+            background: #8b7355;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .calendar-header button:hover {
+            background: #6d5942;
         }
 
         .calendar-grid {
@@ -154,6 +233,10 @@
             cursor: pointer;
             float: right;
         }
+
+        .add-row-btn:hover {
+            background: #1f1f1f;
+        }
     </style>
 </head>
 
@@ -164,9 +247,20 @@
 
 <!-- 사이드바 -->
 <div class="sidebar" id="sidebar">
-    <a href="#">📌 일정 캘린더</a>
-    <a href="#">📑 세부 일정표</a>
-    <a href="../seokgwan_equipment_list.html">📦 장비 리스트</a>
+    <ul class="sidebar-menu">
+        <li>
+            <div class="menu-item" onclick="toggleSubmenu(this)">
+                <span>📋 보고서</span>
+                <span class="arrow">▶</span>
+            </div>
+            <div class="submenu">
+                <a href="floor_marking_report.html">📍 바닥 마킹 시스템</a>
+                <a href="seokgwan_equipment_list.html">📦 석관 설비 리스트</a>
+                <a href="waste_management_report.html">🗑️ 폐기물 관리 효율화</a>
+            </div>
+        </li>
+    </ul>
+    <button class="logout-btn" onclick="logout()">로그아웃</button>
 </div>
 
 <div class="overlay" id="overlay" onclick="closeSidebar()"></div>
@@ -202,6 +296,17 @@
 </div>
 
 <script>
+    // 로그인 체크
+    if (localStorage.getItem('haim_logged_in') !== 'true') {
+        window.location.href = 'login.html';
+    }
+
+    // 로그아웃 함수
+    function logout() {
+        localStorage.removeItem('haim_logged_in');
+        window.location.href = 'login.html';
+    }
+
     /* 사이드바 */
     function openSidebar() {
         document.getElementById("sidebar").classList.add("active");
@@ -211,6 +316,13 @@
     function closeSidebar() {
         document.getElementById("sidebar").classList.remove("active");
         document.getElementById("overlay").style.display = "none";
+    }
+
+    /* 서브메뉴 토글 */
+    function toggleSubmenu(element) {
+        element.classList.toggle('active');
+        const submenu = element.nextElementSibling;
+        submenu.classList.toggle('active');
     }
 
     /* 캘린더 생성 */
