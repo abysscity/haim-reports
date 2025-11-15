@@ -1,435 +1,298 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Haim Interior Calendar</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>하임인테리어 작업 현황</title>
 
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing:border-box;
-        }
-        body {
-            font-family: Pertendard, "Segoe UI", sans-serif;
-            background: #f5fleb;
-        }
-        
-        /* 햄버거 아이콘 */
-        .hamburger {
-            font-size: 26px;
-            padding: 15px 20px;
-            cursor: pointer;
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: 1001;
-            color: #2c2c2c;
-        }
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+		body {
+			font-family: 'Malgun Gothic', Pretendard, sans-serif;
+			background: #525659;
+			overflow: hidden;
+		}
 
-        /* 사이드바 */
-        .sidebar {
-            width: 250px;
-            height: 100%;
-            background: #ffffff;
-            position: fixed;
-            top: 0;
-            left: -250px;
-            transition: 0.3s ease;
-            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
-            padding-top: 70px;
-            z-index: 1000;
-        }
+		/* 사이드바 스타일 */
+		.sidebar {
+			width: 250px;
+			background: #2c2c2c;
+			height: 100vh;
+			position: fixed;
+			left: 0;
+			top: 0;
+			padding: 20px;
+			overflow-y: auto;
+			transition: transform 0.3s;
+			z-index: 1000;
+		}
 
-        .sidebar.active {
-            left: 0;
-        }
+		.sidebar-header {
+			color: #f5f0e8;
+			font-size: 18px;
+			font-weight: bold;
+			margin-bottom: 30px;
+			padding-bottom: 15px;
+			border-bottom: 2px solid #8b7355;
+		}
 
-        .sidebar-menu {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
+		.sidebar-menu {
+			list-style: none;
+		}
 
-        .sidebar-menu > li {
-            border-bottom: 1px solid #f0f0f0;
-        }
+		.sidebar-menu li {
+			margin-bottom: 10px;
+		}
 
-        .sidebar-menu a, .sidebar-menu .menu-item {
-            display: block;
-            padding: 14px 24px;
-            text-decoration: none;
-            color: #333;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
+		.sidebar-menu a {
+			display: block;
+			color: #d4cfc5;
+			text-decoration: none;
+			padding: 12px 15px;
+			border-radius: 5px;
+			transition: all 0.3s;
+			font-size: 14px;
+		}
 
-        .sidebar-menu a:hover, .sidebar-menu .menu-item:hover {
-            background: #f3f3f3;
-        }
+		.sidebar-menu a:hover {
+			background: #8b7355;
+			color: #f5f0e8;
+		}
 
-        .menu-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+		.sidebar-menu a.active {
+			background: #8b7355;
+			color: #f5f0e8;
+			font-weight: bold;
+		}
 
-        .menu-item .arrow {
-            transition: transform 0.3s;
-        }
+		/* 로그아웃 버튼 */
+		.logout-btn {
+			margin-top: 30px;
+			padding: 12px;
+			background: #8b7355;
+			color: #f5f0e8;
+			border: none;
+			border-radius: 5px;
+			cursor: pointer;
+			width: 100%;
+			font-size: 14px;
+			font-weight: bold;
+		}
+		.logout-btn:hover {
+			background: #6d5942;
+		}
 
-        .menu-item.active .arrow {
-            transform: rotate(90deg);
-        }
+		/* 햄버거 메뉴 버튼 */
+		.menu-toggle {
+			display: none;
+			position: fixed;
+			top: 20px;
+			left: 20px;
+			z-index: 1001;
+			background: #8b7355;
+			color: #f5f0e8;
+			border: none;
+			padding: 10px 15px;
+			border-radius: 5px;
+			cursor: pointer;
+			font-size: 20px;
+		}
 
-        .submenu {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease;
-            background: #f9f9f9;
-        }
+		/* 메인 컨텐츠 영역 */
+		.main-content {
+			margin-left: 250px;
+			height: 100vh;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			padding: 40px;
+		}
 
-        .submenu.active {
-            max-height: 200px;
-        }
+		.content-wrapper {
+			max-width: 800px;
+			width: 100%;
+		}
 
-        .submenu a {
-            padding: 12px 24px 12px 48px;
-            font-size: 14px;
-            color: #555;
-        }
+		/* 노션 카드 */
+		.notion-card {
+			background: #f5f0e8;
+			border-radius: 16px;
+			padding: 60px 50px;
+			box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+			text-align: center;
+		}
 
-        .submenu a:hover {
-            background: #efefef;
-        }
+		.card-icon {
+			font-size: 64px;
+			margin-bottom: 20px;
+		}
 
-        .sidebar .logout-btn {
-            margin: 20px 24px;
-            padding: 12px;
-            background: #8b7355;
-            color: #f5f0e8;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            width: calc(100% - 48px);
-            font-size: 14px;
-            font-weight: bold;
-        }
+		.notion-card h1 {
+			font-size: 32px;
+			color: #2c2c2c;
+			margin-bottom: 15px;
+			font-weight: bold;
+		}
 
-        .sidebar .logout-btn:hover {
-            background: #6d5942;
-        }
+		.card-description {
+			font-size: 16px;
+			color: #5c5c5c;
+			margin-bottom: 40px;
+		}
 
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.3);
-            display: none;
-            z-index: 999;
-        }
+		/* 노션 버튼 */
+		.notion-btn {
+			display: inline-flex;
+			align-items: center;
+			gap: 10px;
+			padding: 18px 40px;
+			background: #8b7355;
+			color: #f5f0e8;
+			text-decoration: none;
+			border-radius: 10px;
+			font-size: 18px;
+			font-weight: bold;
+			transition: all 0.3s;
+			box-shadow: 0 4px 15px rgba(139, 115, 85, 0.3);
+		}
 
-        /* 메인 컨텐츠 */
-        .container {
-            max-width: 900px;
-            margin: 60px auto;
-            padding: 20px;
-        }
+		.notion-btn:hover {
+			background: #6d5942;
+			transform: translateY(-2px);
+			box-shadow: 0 6px 20px rgba(139, 115, 85, 0.4);
+		}
 
-        /* 타이틀 */
-        .title {
-            text-align: center;
-            font-size: 24px;
-            letter-spacing: 2px;
-            margin-bottom: 20px;
-            font-weight: 600;
-        }
+		.arrow {
+			font-size: 20px;
+			transition: transform 0.3s;
+		}
 
-        /* 캘린더 스타일 */
-        .calendar {
-            width: 100%;
-            background: white;
-            border-radius: 14px;
-            padding: 20px;
-            box-shadow: 0px 2px 12px rgba(0,0,0,0.05);
-            margin-bottom: 30px;
-        }
+		.notion-btn:hover .arrow {
+			transform: translateX(5px);
+		}
 
-        .calendar-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+		/* 모바일 반응형 */
+		@media screen and (max-width: 768px) {
+			.sidebar {
+				transform: translateX(-100%);
+			}
+			.sidebar.active {
+				transform: translateX(0);
+			}
+			.menu-toggle {
+				display: block;
+			}
+			.main-content {
+				margin-left: 0;
+				padding: 20px;
+			}
+			
+			body {
+				background: #f5f0e8;
+			}
+			
+			.content-wrapper {
+				max-width: 100%;
+			}
+			
+			.notion-card {
+				padding: 40px 25px;
+				border-radius: 12px;
+			}
+			
+			.card-icon {
+				font-size: 48px;
+				margin-bottom: 15px;
+			}
+			
+			.notion-card h1 {
+				font-size: 22px;
+				margin-bottom: 12px;
+			}
+			
+			.card-description {
+				font-size: 14px;
+				margin-bottom: 30px;
+			}
+			
+			.notion-btn {
+				font-size: 16px;
+				padding: 14px 28px;
+			}
+		}
 
-        .calendar-header button {
-            background: #8b7355;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        .calendar-header button:hover {
-            background: #6d5942;
-        }
-
-        .calendar-grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            margin-top: 20px;
-            text-align: center;
-        }
-
-        .day {
-            padding: 10px 0;
-            font-weight: bold;
-            color: #666;
-        }
-
-        .date {
-            height: 90px;
-            padding: 10px;
-            border-radius: 12px;
-            transition: 0.15s;
-            cursor: pointer;
-        }
-
-        .date:hover {
-            background: #f1ece3;
-            transform: translateY(-2px);
-        }
-
-        /* 일정 세부 테이블 */
-        table {
-            width: 100%;
-            background: white;
-            border-radius: 14px;
-            padding: 20px;
-            border-collapse: collapse;
-            box-shadow: 0px 2px 12px rgba(0,0,0,0.05);
-        }
-
-        table th, table td {
-            padding: 12px 14px;
-            border-bottom: 1px solid #e6e2da;
-        }
-
-        table input {
-            width: 95%;
-            padding: 8px;
-            border-radius: 6px;
-            border: 1px solid #ccc;
-        }
-
-        .add-row-btn {
-            margin-top: 10px;
-            padding: 10px 18px;
-            background: #2f2f2f;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            float: right;
-        }
-
-        .add-row-btn:hover {
-            background: #1f1f1f;
-        }
-    </style>
+		/* 오버레이 */
+		.overlay {
+			display: none;
+			position: fixed;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			background: rgba(0,0,0,0.5);
+			z-index: 999;
+		}
+		.overlay.active {
+			display: block;
+		}
+	</style>
 </head>
-
 <body>
+	<button class="menu-toggle" onclick="toggleMenu()">☰</button>
 
-<!-- 햄버거 버튼 -->
-<div class="hamburger" onclick="openSidebar()">☰</div>
+	<nav class="sidebar" id="sidebar">
+		<div class="sidebar-header">📋 HAIM 보고서</div>
+		<ul class="sidebar-menu">
+			<li><a href="index.html" class="active">작업 현황</a></li>
+			<li><a href="waste_management_report.html">폐기물 관리 효율화</a></li>
+			<li><a href="floor_marking_report.html">바닥 마킹 시스템</a></li>
+			<li><a href="seokgwan_equipment_list.html">석관 설비 리스트</a></li>
+		</ul>
+		<button class="logout-btn" onclick="logout()">로그아웃</button>
+	</nav>
 
-<!-- 사이드바 -->
-<div class="sidebar" id="sidebar">
-    <ul class="sidebar-menu">
-        <li>
-            <div class="menu-item" onclick="toggleSubmenu(this)">
-                <span>📋 보고서</span>
-                <span class="arrow">▶</span>
-            </div>
-            <div class="submenu">
-                <a href="floor_marking_report.html">📍 바닥 마킹 시스템</a>
-                <a href="seokgwan_equipment_list.html">📦 석관 설비 리스트</a>
-                <a href="waste_management_report.html">🗑️ 폐기물 관리 효율화</a>
-            </div>
-        </li>
-    </ul>
-    <button class="logout-btn" onclick="logout()">로그아웃</button>
-</div>
+	<div class="overlay" id="overlay" onclick="toggleMenu()"></div>
 
-<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+	<div class="main-content">
+		<div class="content-wrapper">
+			<div class="notion-card">
+				<div class="card-icon">📋</div>
+				<h1>하임인테리어 작업 현황</h1>
+				<p class="card-description">노션 페이지에서 전체 작업 현황과 일정을 확인하세요</p>
+				
+				<a href="https://gravel-success-796.notion.site/776208e4a05f48ef936453b3f98eefd4?v=edc562d4376844f696fca2f541a5c8db" 
+				   target="_blank" 
+				   class="notion-btn">
+					캘린더 열기
+					<span class="arrow">→</span>
+				</a>
+			</div>
+		</div>
+	</div>
 
-<div class="container">
-    <div class="title">HAIM INTERIOR 일정관리</div>
+	<script>
+		// 로그인 체크
+		if (localStorage.getItem('haim_logged_in') !== 'true') {
+			window.location.href = 'login.html';
+		}
 
-    <!-- 캘린더 -->
-    <div class="calendar">
-        <div class="calendar-header">
-            <button onclick="prevMonth()">◀</button>
-            <h2 id="calendar-title"></h2>
-            <button onclick="nextMonth()">▶</button>
-        </div>
+		// 로그아웃
+		function logout() {
+			localStorage.removeItem('haim_logged_in');
+			window.location.href = 'login.html';
+		}
 
-        <div class="calendar-grid" id="calendar-grid"></div>
-    </div>
-
-    <!-- 세부 일정 표 -->
-    <table id="schedule-table">
-        <thead>
-            <tr>
-                <th>날짜</th>
-                <th>작업 내용</th>
-                <th>비고</th>
-            </tr>
-        </thead>
-        <tbody id="schedule-body">
-        </tbody>
-    </table>
-
-    <button class="add-row-btn" onclick="addRow()">+ 일정 추가</button>
-</div>
-
-<script>
-    // 로그인 체크
-    if (localStorage.getItem('haim_logged_in') !== 'true') {
-        window.location.href = 'login.html';
-    }
-
-    // 로그아웃 함수
-    function logout() {
-        localStorage.removeItem('haim_logged_in');
-        window.location.href = 'login.html';
-    }
-
-    /* 사이드바 */
-    function openSidebar() {
-        document.getElementById("sidebar").classList.add("active");
-        document.getElementById("overlay").style.display = "block";
-    }
-
-    function closeSidebar() {
-        document.getElementById("sidebar").classList.remove("active");
-        document.getElementById("overlay").style.display = "none";
-    }
-
-    /* 서브메뉴 토글 */
-    function toggleSubmenu(element) {
-        element.classList.toggle('active');
-        const submenu = element.nextElementSibling;
-        submenu.classList.toggle('active');
-    }
-
-    /* 캘린더 생성 */
-    let currentDate = new Date();
-
-    function renderCalendar() {
-        const year = currentDate.getFullYear();
-        const month = currentDate.getMonth();
-
-        document.getElementById("calendar-title").innerText = `${year}년 ${month + 1}월`;
-
-        const firstDay = new Date(year, month, 1).getDay();
-        const lastDate = new Date(year, month + 1, 0).getDate();
-
-        const grid = document.getElementById("calendar-grid");
-        grid.innerHTML = "";
-
-        const days = ["일", "월", "화", "수", "목", "금", "토"];
-        days.forEach(d => {
-            const dayEl = document.createElement("div");
-            dayEl.className = "day";
-            dayEl.innerText = d;
-            grid.appendChild(dayEl);
-        });
-
-        for (let i = 0; i < firstDay; i++) {
-            const empty = document.createElement("div");
-            grid.appendChild(empty);
-        }
-
-        for (let i = 1; i <= lastDate; i++) {
-            const dateEl = document.createElement("div");
-            dateEl.className = "date";
-            dateEl.innerText = i;
-
-            dateEl.onclick = () => {
-                addRow(i);
-            };
-
-            grid.appendChild(dateEl);
-        }
-    }
-
-    function prevMonth() {
-        currentDate.setMonth(currentDate.getMonth() - 1);
-        renderCalendar();
-    }
-
-    function nextMonth() {
-        currentDate.setMonth(currentDate.getMonth() + 1);
-        renderCalendar();
-    }
-
-    renderCalendar();
-
-    /* 일정표 추가 */
-    function addRow(day = "") {
-        const scheduleBody = document.getElementById("schedule-body");
-
-        const row = document.createElement("tr");
-        row.innerHTML = `
-            <td><input value="${day}" /></td>
-            <td><input /></td>
-            <td><input /></td>
-        `;
-
-        scheduleBody.appendChild(row);
-        saveSchedule();
-    }
-
-    /* 로컬 저장 */
-    function saveSchedule() {
-        const rows = [];
-        const trs = document.querySelectorAll("#schedule-body tr");
-        trs.forEach(tr => {
-            const cells = tr.querySelectorAll("input");
-            rows.push({
-                date: cells[0].value,
-                task: cells[1].value,
-                memo: cells[2].value
-            });
-        });
-
-        localStorage.setItem("haimSchedule", JSON.stringify(rows));
-    }
-
-    /* 저장된 일정 불러오기 */
-    function loadSchedule() {
-        const data = JSON.parse(localStorage.getItem("haimSchedule")) || [];
-        data.forEach(d => {
-            addRow(d.date);
-            const lastRow = document.querySelector("#schedule-body tr:last-child");
-            const inputs = lastRow.querySelectorAll("input");
-            inputs[0].value = d.date;
-            inputs[1].value = d.task;
-            inputs[2].value = d.memo;
-        });
-    }
-
-    loadSchedule();
-
-    document.body.addEventListener("input", saveSchedule);
-</script>
-
+		// 사이드바 토글
+		function toggleMenu() {
+			const sidebar = document.getElementById('sidebar');
+			const overlay = document.getElementById('overlay');
+			sidebar.classList.toggle('active');
+			overlay.classList.toggle('active');
+		}
+	</script>
 </body>
 </html>
