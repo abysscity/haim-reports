@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>인테리어 폐기물 관리 효율화 보고서</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Malgun Gothic', sans-serif;
+            background: #525659;
+            padding: 0;
+            margin: 0;
+            line-height: 1.6;
+            display: flex;
+            min-height: 100vh; /* 전체 화면 높이 사용 */
+        }
+        
+        /* 사이드바 스타일 (추가) */
+        .sidebar {
+            width: 250px;
+            background: #2c2c2c;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            padding: 20px;
+            overflow-y: auto;
+            transition: transform 0.3s;
+            z-index: 1000;
+        }
+
+        .sidebar-header {
+            color: #f5f0e8;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #8b7355;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 10px;
+        }
+
+        .sidebar-menu a {
+            display: block;
+            color: #d4cfc5;
+            text-decoration: none;
+            padding: 12px 15px;
+            border-radius: 5px;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+
+        .sidebar-menu a:hover {
+            background: #8b7355;
+            color: #f5f0e8;
+        }
+
+        .sidebar-menu a.active {
+            background: #8b7355;
+            color: #f5f0e8;
+            font-weight: bold;
+        }
+
+        /* 햄버거 메뉴 버튼 */
+        .menu-toggle {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1001;
+            background: #8b7355;
+            color: #f5f0e8;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        /* 메인 콘텐츠 영역 (수정) */
+        .main-content {
+            margin-left: 250px; /* 사이드바 너비만큼 왼쪽 마진 설정 */
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 40px 20px;
+        }
+        
+        .container {
+            width: 21cm;
+            min-height: 29.7cm;
+            background: #f5f0e8;
+            padding: 2cm;
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+            margin: 0 auto;
+        }
+        
+        h1 {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            border-bottom: 3px solid #2c2c2c;
+            padding-bottom: 10px;
+            color: #2c2c2c;
+        }
+        
+        .subtitle {
+            color: #5c5c5c;
+            font-size: 13px;
+            margin-bottom: 5px;
+        }
+        
+        .description {
+            color: #3c3c3c;
+            font-size: 14px;
+            margin-bottom: 30px;
+            padding: 10px;
+            background: #ebe6dd;
+            border-left: 4px solid #8b7355;
+        }
+        
+        h2 {
+            font-size: 18px;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            color: #2c2c2c;
+        }
+        
+        h2::before {
+            content: '';
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: #8b7355;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        
+        .content-box {
+            background: #ebe6dd;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-left: 4px solid #8b7355;
+            font-size: 14px;
+            line-height: 1.8;
+            color: #2c2c2c;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 13px;
+        }
+        
+        th, td {
+            border: 1px solid #d4cfc5;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        th {
+            background: #e5dfd5;
+            font-weight: bold;
+            width: 25%;
+            color: #2c2c2c;
+        }
+        
+        td {
+            background: #faf8f5;
+            color: #3c3c3c;
+        }
+        
+        h3 {
+            font-size: 15px;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            color: #3c3c3c;
+            font-weight: bold;
+        }
+        
+        .bullet-item {
+            margin-left: 20px;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #2c2c2c;
+        }
+        
+        .bullet-item::before {
+            content: '•';
+            margin-right: 8px;
+            color: #8b7355;
+        }
+        
+        .conclusion {
+            background: #e5dfd5;
+            padding: 20px;
+            margin-top: 30px;
+            border-left: 4px solid #8b7355;
+            font-size: 14px;
+            line-height: 1.8;
+            color: #2c2c2c;
+        }
+        
+        .footer {
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 2px solid #8b7355;
+            text-align: center;
+        }
+        
+        .footer h2 {
+            font-size: 24px;
+            margin: 10px 0;
+            color: #2c2c2c;
+        }
+        
+        .footer h2::before {
+            content: '';
+            display: none;
+        }
+        
+        .footer-info {
+            font-size: 13px;
+            color: #5c5c5c;
+            margin-top: 10px;
+        }
+        
+        .section-number {
+            color: #8b7355;
+            font-size: 16px;
+            margin-right: 5px;
+        }
+
+        .nav-button {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 12px 30px;
+            background: #8b7355;
+            color: #f5f0e8;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: bold;
+            transition: background 0.3s;
+            cursor: pointer;
+        }
+
+        .nav-button:hover {
+            background: #6d5942;
+        }
+
+        .button-container {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #d4cfc5;
+        }
+
+        .method-item {
+            margin-bottom: 20px;
+        }
+
+        .method-title {
+            font-weight: bold;
+            color: #2c2c2c;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .method-content {
+            color: #3c3c3c;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+        
+        /* 모바일 반응형 추가 */
+        @media screen and (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            body {
+                padding: 0;
+                background: #f5f0e8;
+            }
+
+            .container {
+                width: 100%;
+                min-height: auto;
+                padding: 60px 20px 20px 20px;
+                box-shadow: none;
+            }
+        }
+    </style>
+    <script>
+        function toggleMenu() {
+            document.querySelector('.sidebar').classList.toggle('active');
+        }
+    </script>
+</head>
+<body>
+    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+
+    <nav class="sidebar">
+        <div class="sidebar-header">📋 HAIM 보고서</div>
+        <ul class="sidebar-menu">
+            <li><a href="waste_management_report.html" class="active">폐기물 관리 효율화</a></li>
+            <li><a href="floor_marking_report.html">바닥 마킹 시스템</a></li>
+            <li><a href="seokgwan_equipment_list.html">석관 설비 리스트</a></li>
+        </ul>
+    </nav>
+
+    <div class="main-content">
+        <div class="container">
+            <h1>인테리어 폐기물 관리 효율화 보고서</h1>
+            
+            <div class="subtitle">HAIM INTERIOR / 2025.11.13</div>
+            <div class="description">
+                소형 인테리어 현장의 마감 공정 중심 폐기물 효율 관리 개선안
+            </div>
+
+            <h2><span class="section-number">1️⃣</span> 보고 목적</h2>
+            <div class="content-box">
+                소형 인테리어 공사에서 도배∬필름 공정 후반부에 집중되는 폐기물을 효율적으로 관리하고 차량 적재 과부하 및 추가 반출비용 발생을 예방하기 위함. 실장 및 주임 중심의 소규모 현장 관리체계에 맞춘 개선안을 제시한다.
+            </div>
+
+            <h2><span class="section-number">2️⃣</span> 현황 및 문제점</h2>
+            <table>
+                <tr>
+                    <th>현장 특성</th>
+                    <td>소형 인테리어 현장, 방통층 미철거, 콘크리트 파편 거의 없음</td>
+                </tr>
+                <tr>
+                    <th>인력 구조</th>
+                    <td>실장 1명 + 주임 1명 중심 관리</td>
+                </tr>
+                <tr>
+                    <th>주요 폐기물</th>
+                    <td>석고보드, 목재틀, 비닐, 도배지, 시트 backing, 포장재</td>
+                </tr>
+                <tr>
+                    <th>문제 상황</th>
+                    <td>도배∬필름 공정에서 폐기물 급증 → 차량 적재 오버 발생</td>
+                </tr>
+                <tr>
+                    <th>공간 제약</th>
+                    <td>폐기물 임시보관구역 확보 어려움 (실내 협소)</td>
+                </tr>
+            </table>
+
+            <h2><span class="section-number">3️⃣</span> 원인 분석</h2>
+            <div class="content-box">
+                <div class="bullet-item">철거 시점에 마감공정 폐기물 발생량 예측 부재</div>
+                <div class="bullet-item">현장공간 협소로 폐기물 분리 적치 불가</div>
+                <div class="bullet-item">차량 1회 반출 기준으로만 폐기 계획 수립 → 후반부 과적재 발생</div>
+            </div>
+
+            <h2><span class="section-number">4️⃣</span> 개선 방안</h2>
+            
+            <div class="method-item">
+                <div class="method-title">(1) 선(先)철거 방식 도입 — 실장∬주임 직접 투입</div>
+                <div class="content-box method-content">
+                    도배∬필름 공정이 다수 진행되지 않는 시점에 실장과 주임이 현장에 직접 투입되어, 후반부 공정에서 발생할 도배지∬시트류 폐기물을 사전에 철거 단계에서 함께 제거한다.<br>
+                    → 도배∬필름 공정 중 발생 쓰레기량 약 50% 이상 감소.
+                </div>
+            </div>
+
+            <div class="method-item">
+                <div class="method-title">(2) 철거 및 마감 폐기물 분산처리 프로세스 구축</div>
+                <div class="content-box method-content">
+                    공사 초반 철거 시점에서 벽지∬시트 잔재 가능 구간을 함께 철거하여 폐기물 발생 시점을 분산한다. 이로써 차량 적재 오버를 방지하고, 현장 내 폐기물 누적 문제를 최소화한다.
+                </div>
+            </div>
+
+            <div class="method-item">
+                <div class="method-title">(3) 인력 효율화 및 비용 절감</div>
+                <div class="content-box method-content">
+                    선철거 체계를 통해 기존의 도배∬필름 후반 폐기물 정리 인력 투입을 줄일 수 있다. 실장∬주임 중심으로 초기 철거를 병행하면 별도 인력 감축이 가능하며, 결과적으로 인건비 절감과 회사 이익 증대에 기여.
+                </div>
+            </div>
+
+            <div class="method-item">
+                <div class="method-title">(4) 차량 반출 일정 유연화</div>
+                <div class="content-box method-content">
+                    공정 중간 1회 + 마감 후 1회로 분리 반출, 두 번째 반출은 소형차량 활용으로 비용 최소화.
+                </div>
+            </div>
+
+            <div class="method-item">
+                <div class="method-title">(5) 폐기물 압축 및 소형 포대화</div>
+                <div class="content-box method-content">
+                    가벼운 폐기물은 가능한 작게 압축하여 포대 부피를 최소화하고 차량 적재 효율을 높인다.
+                </div>
+            </div>
+
+            <h2><span class="section-number">5️⃣</span> 기대효과</h2>
+            <table>
+                <tr>
+                    <th>비용 절감</th>
+                    <td>차량 추가투입 및 인력 감축으로 공사비 절감</td>
+                </tr>
+                <tr>
+                    <th>작업 효율</th>
+                    <td>현장 내 이동 동선 확보, 정리시간 단축</td>
+                </tr>
+                <tr>
+                    <th>안전관리</th>
+                    <td>폐기물 적치 최소화로 위험요소 감소</td>
+                </tr>
+                <tr>
+                    <th>관리 간소화</th>
+                    <td>실장∬주임 중심 관리에 최적화된 프로세스</td>
+                </tr>
+                <tr>
+                    <th>폐기물 분산</th>
+                    <td>도배∬필름 공정 중 쓰레기량 50% 이상 감소</td>
+                </tr>
+            </table>
+
+            <h2><span class="section-number">6️⃣</span> 결론</h2>
+            <div class="conclusion">
+                도배∬필름 공정의 쓰레기 문제는 철거 시점의 사전 대응으로 충분히 해소 가능하다. 실장∬주임 중심의 선(先)철거 시스템을 도입하면 현장공간 제약을 극복하면서 인건비 절감과 공정 효율화를 동시에 달성할 수 있다. 이 방식은 소규모 현장에 최적화된 현실적인 폐기물 관리 전략으로 평가된다.
+            </div>
+
+            <div class="footer">
+                <h2>HAIM INTERIOR</h2>
+                <div class="footer-info">
+                    담당자: 최동인 주임<br>
+                    날짜: 2025.11.13
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

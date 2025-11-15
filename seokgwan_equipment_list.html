@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>석관 현장 설비 리스트업 보고서</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Malgun Gothic', sans-serif;
+            background: #525659;
+            padding: 0;
+            margin: 0;
+            line-height: 1.6;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* 사이드바 스타일 */
+        .sidebar {
+            width: 250px;
+            background: #2c2c2c;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            padding: 20px;
+            overflow-y: auto;
+            transition: transform 0.3s;
+            z-index: 1000;
+        }
+
+        .sidebar-header {
+            color: #f5f0e8;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #8b7355;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 10px;
+        }
+
+        .sidebar-menu a {
+            display: block;
+            color: #d4cfc5;
+            text-decoration: none;
+            padding: 12px 15px;
+            border-radius: 5px;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+
+        .sidebar-menu a:hover {
+            background: #8b7355;
+            color: #f5f0e8;
+        }
+
+        .sidebar-menu a.active {
+            background: #8b7355;
+            color: #f5f0e8;
+            font-weight: bold;
+        }
+
+        /* 햄버거 메뉴 버튼 */
+        .menu-toggle {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1001;
+            background: #8b7355;
+            color: #f5f0e8;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        /* 메인 콘텐츠 영역 */
+        .main-content {
+            margin-left: 250px;
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 40px 20px;
+        }
+        
+        .container {
+            width: 21cm;
+            min-height: 29.7cm;
+            background: #f5f0e8;
+            padding: 2cm;
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            border-bottom: 3px solid #2c2c2c;
+            padding-bottom: 10px;
+            color: #2c2c2c;
+        }
+        
+        .subtitle {
+            color: #5c5c5c;
+            font-size: 13px;
+            margin-bottom: 5px;
+        }
+        
+        .description {
+            color: #3c3c3c;
+            font-size: 14px;
+            margin-bottom: 30px;
+            padding: 10px;
+            background: #ebe6dd;
+            border-left: 4px solid #8b7355;
+        }
+        
+        h2 {
+            font-size: 18px;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            color: #2c2c2c;
+            background: #e5dfd5;
+            padding: 10px;
+            border-left: 4px solid #8b7355;
+        }
+        
+        .list-section {
+            margin-bottom: 25px;
+        }
+        
+        .list-item {
+            padding: 8px 15px;
+            margin-bottom: 5px;
+            background: #faf8f5;
+            border-left: 3px solid #8b7355;
+            font-size: 14px;
+            color: #2c2c2c;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .item-name {
+            flex: 1;
+        }
+        
+        .item-quantity {
+            font-weight: bold;
+            color: #8b7355;
+            margin-left: 20px;
+        }
+        
+        .product-item {
+            padding: 10px 15px;
+            margin-bottom: 8px;
+            background: #faf8f5;
+            border-left: 3px solid #8b7355;
+            font-size: 14px;
+            color: #2c2c2c;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .product-item a {
+            color: #8b7355;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+        
+        .product-item a:hover {
+            color: #6d5942;
+            text-decoration: underline;
+        }
+        
+        .product-price {
+            font-weight: bold;
+            color: #8b7355;
+            margin-left: 20px;
+            white-space: nowrap;
+        }
+        
+        .category-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #3c3c3c;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            padding: 5px 10px;
+            background: #f0ebe3;
+            border-left: 3px solid #8b7355;
+        }
+        
+        .footer {
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 2px solid #8b7355;
+            text-align: center;
+        }
+        
+        .footer h2 {
+            font-size: 24px;
+            margin: 10px 0;
+            color: #2c2c2c;
+            background: none;
+            border: none;
+            padding: 0;
+        }
+        
+        .footer-info {
+            font-size: 13px;
+            color: #5c5c5c;
+            margin-top: 10px;
+        }
+
+        @media screen and (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            body {
+                padding: 0;
+                background: #f5f0e8;
+            }
+
+            .container {
+                width: 100%;
+                min-height: auto;
+                padding: 60px 20px 20px 20px;
+                box-shadow: none;
+            }
+
+            h1 {
+                font-size: 22px;
+            }
+
+            h2 {
+                font-size: 16px;
+                margin-top: 20px;
+                padding: 8px;
+            }
+
+            .description {
+                font-size: 13px;
+                padding: 8px;
+            }
+
+            .category-title {
+                font-size: 14px;
+                padding: 5px 8px;
+            }
+
+            .list-item {
+                padding: 8px 12px;
+                font-size: 13px;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .item-quantity {
+                margin-left: 0;
+                margin-top: 5px;
+            }
+
+            .product-item {
+                padding: 10px 12px;
+                font-size: 13px;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .product-item a {
+                margin-bottom: 8px;
+            }
+
+            .product-price {
+                margin-left: 0;
+                font-size: 14px;
+            }
+
+            .footer h2 {
+                font-size: 20px;
+            }
+
+            .footer-info {
+                font-size: 12px;
+            }
+        }
+    </style>
+    <script>
+        function toggleMenu() {
+            document.querySelector('.sidebar').classList.toggle('active');
+        }
+    </script>
+</head>
+<body>
+    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+
+    <nav class="sidebar">
+        <div class="sidebar-header">📋 HAIM 보고서</div>
+        <ul class="sidebar-menu">
+            <li><a href="waste_management_report.html">폐기물 관리 효율화</a></li>
+            <li><a href="floor_marking_report.html">바닥 마킹 시스템</a></li>
+            <li><a href="seokgwan_equipment_list.html" class="active">석관 설비 리스트</a></li>
+        </ul>
+    </nav>
+
+    <div class="main-content">
+    <div class="container">
+        <h1>석관 현장 설비 리스트업 보고서</h1>
+        
+        <div class="subtitle">HAIM INTERIOR / 2025.11.13</div>
+        <div class="description">
+            석관 현장의 천정, 벽면 및 욕실 설비 목록 정리
+        </div>
+
+        <h2>천정 리스트업</h2>
+        
+        <div class="list-section">
+            <div class="category-title">감지기</div>
+            <div class="list-item">
+                <span class="item-name">정온식 감지기</span>
+                <span class="item-quantity">3개</span>
+            </div>
+            <div class="list-item">
+                <span class="item-name">가스 감지기</span>
+                <span class="item-quantity">1개</span>
+            </div>
+            <div class="list-item">
+                <span class="item-name">차동식 감지기</span>
+                <span class="item-quantity">3개</span>
+            </div>
+        </div>
+
+        <div class="list-section">
+            <div class="category-title">조명 및 센서</div>
+            <div class="list-item">
+                <span class="item-name">026-01-176 (거실)</span>
+            </div>
+            <div class="list-item">
+                <span class="item-name">226-03-030 센서 (세탁실)</span>
+            </div>
+            <div class="list-item">
+                <span class="item-name">226-04-024 (직부)</span>
+                <span class="item-quantity">2개</span>
+            </div>
+            <div class="list-item">
+                <span class="item-name">213-08-164 (전실)</span>
+            </div>
+        </div>
+
+        <div class="list-section">
+            <div class="category-title">주문 제품</div>
+            <div class="product-item">
+                <a href="https://smartstore.naver.com/happylamp/products/5204162330?nl-au=380b0eaa69d44ad4bcbb62c29d911d9d&nl-query=%EC%98%A4%EC%8A%A4%EB%9E%8C+%EB%B0%A9%EB%93%B1" target="_blank">오스람 방등 (사이즈별 주문 가능)</a>
+                <span class="product-price">18,900원</span>
+            </div>
+            <div class="product-item">
+                <a href="https://smartstore.naver.com/mood_lighting/products/7145289370?NaPm=ct%3Dmhzmvkxk%7Cci%3D019eef9f578dc394ccf4bef7817cff3d3cfde8ef%7Ctr%3Dslsl%7Csn%3D3955179%7Chk%3D3e484250a868027aa05c9764ddf23081c25d60cc&nl-au=b59c624fa04e4e27a5c5f425710b07fb&nl-query=%EC%A1%B0%EB%AA%85+%EB%A6%AC%EB%AA%A8%EC%BB%A8+%EC%88%98%EC%8B%A0%EA%B8%B0" target="_blank">방등 리모컨</a>
+                <span class="product-price">9,900원</span>
+            </div>
+        </div>
+
+        <h2>벽 리스트업</h2>
+        
+        <div class="list-section">
+            <div class="category-title">세로형</div>
+            <div class="list-item">
+                <span class="item-name">2구 콘센트</span>
+                <span class="item-quantity">9개</span>
+            </div>
+            <div class="list-item">
+                <span class="item-name">2구 방우</span>
+                <span class="item-quantity">3개</span>
+            </div>
+            <div class="list-item">
+                <span class="item-name">CATV</span>
+                <span class="item-quantity">2개</span>
+            </div>
+            <div class="list-item">
+                <span class="item-name">분전반 4구 메인</span>
+                <span class="item-quantity">1개</span>
+            </div>
+            <div class="list-item">
+                <span class="item-name">3구 스위치</span>
+                <span class="item-quantity">2개</span>
+            </div>
+            <div class="list-item">
+                <span class="item-name">2구 스위치</span>
+                <span class="item-quantity">1개</span>
+            </div>
+            <div class="list-item">
+                <span class="item-name">1구 스위치</span>
+                <span class="item-quantity">2개</span>
+            </div>
+        </div>
+
+        <h2>욕실</h2>
+        
+        <div class="list-section">
+            <div class="product-item">
+                <a href="https://dreambath.co.kr/product/detail.html?product_no=4837&cate_no=74&display_group=1" target="_blank">수건 걸이</a>
+                <span class="product-price">16,500원</span>
+            </div>
+            <div class="product-item">
+                <a href="https://dreambath.co.kr/product/detail.html?product_no=4889&cate_no=366&display_group=1" target="_blank">일자 선반</a>
+                <span class="product-price">29,000원</span>
+            </div>
+            <div class="product-item">
+                <a href="https://dreambath.co.kr/product/detail.html?product_no=4938&cate_no=231&display_group=1" target="_blank">유리 선반</a>
+                <span class="product-price">26,000원</span>
+            </div>
+            <div class="product-item">
+                <a href="https://dreambath.co.kr/product/detail.html?product_no=5460&cate_no=58&display_group=1" target="_blank">유리</a>
+                <span class="product-price">22,500원</span>
+            </div>
+            <div class="product-item">
+                <a href="https://dreambath.co.kr/product/detail.html?product_no=4653&cate_no=27&display_group=1" target="_blank">수건장</a>
+                <span class="product-price">74,500원</span>
+            </div>
+            <div class="product-item">
+                <a href="https://smartstore.naver.com/5penmk/products/5375872984?nl-ts-pid=jekcllqWnPk8bcdZV5V-247385&n_media=33421&n_query=%EC%84%B8%ED%83%81%EA%B8%B0%EC%88%98%EB%8F%84%EA%BC%AD%EC%A7%80&n_rank=1&n_ad_group=grp-a001-02-000000019611775&n_ad=nad-a001-02-000000121712688&n_campaign_type=2&n_mall_id=5penmk&n_mall_pid=5375872984&n_ad_group_type=2&n_match=3&nl-au=3e86c5c6ff4046a495c5227c0f1b992f" target="_blank">발코니, 세탁실 수전</a>
+                <span class="product-price">5,400원</span>
+            </div>
+        </div>
+
+        <div class="footer">
+            <h2>HAIM INTERIOR</h2>
+            <div class="footer-info">
+                담당자: 최동인 주임<br>
+                날짜: 2025.11.13
+            </div>
+        </div>
+    </div>
+    </div>
+</body>
+</html>

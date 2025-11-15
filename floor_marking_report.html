@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>바닥 분필 마킹 시스템 도입 보고서</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Malgun Gothic', sans-serif;
+            background: #525659;
+            padding: 0;
+            margin: 0;
+            line-height: 1.6;
+            display: flex;
+            min-height: 100vh; /* 전체 화면 높이 사용 */
+        }
+        
+        /* 사이드바 스타일 (추가/수정) */
+        .sidebar {
+            width: 250px;
+            background: #2c2c2c;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            padding: 20px;
+            overflow-y: auto;
+            transition: transform 0.3s;
+            z-index: 1000;
+        }
+
+        .sidebar-header {
+            color: #f5f0e8;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #8b7355;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 10px;
+        }
+
+        .sidebar-menu a {
+            display: block;
+            color: #d4cfc5;
+            text-decoration: none;
+            padding: 12px 15px;
+            border-radius: 5px;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+
+        .sidebar-menu a:hover {
+            background: #8b7355;
+            color: #f5f0e8;
+        }
+
+        .sidebar-menu a.active {
+            background: #8b7355;
+            color: #f5f0e8;
+            font-weight: bold;
+        }
+        
+        /* 햄버거 메뉴 버튼 */
+        .menu-toggle {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1001;
+            background: #8b7355;
+            color: #f5f0e8;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 20px;
+        }
+        
+        /* 메인 콘텐츠 영역 (수정) */
+        .main-content {
+            margin-left: 250px; /* 사이드바 너비만큼 왼쪽 마진 설정 */
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 40px 20px;
+        }
+        
+        .container {
+            width: 21cm;
+            min-height: 29.7cm;
+            background: #f5f0e8;
+            padding: 2cm;
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+            margin: 0 auto;
+        }
+        
+        h1 {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            border-bottom: 3px solid #2c2c2c;
+            padding-bottom: 10px;
+            color: #2c2c2c;
+        }
+        
+        .subtitle {
+            color: #5c5c5c;
+            font-size: 13px;
+            margin-bottom: 5px;
+        }
+        
+        .description {
+            color: #3c3c3c;
+            font-size: 14px;
+            margin-bottom: 30px;
+            padding: 10px;
+            background: #ebe6dd;
+            border-left: 4px solid #8b7355;
+        }
+        
+        h2 {
+            font-size: 18px;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            color: #2c2c2c;
+        }
+        
+        h2::before {
+            content: '';
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: #8b7355;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        
+        .content-box {
+            background: #ebe6dd;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-left: 4px solid #8b7355;
+            font-size: 14px;
+            line-height: 1.8;
+            color: #2c2c2c;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 13px;
+        }
+        
+        th, td {
+            border: 1px solid #d4cfc5;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        th {
+            background: #e5dfd5;
+            font-weight: bold;
+            width: 25%;
+            color: #2c2c2c;
+        }
+        
+        td {
+            background: #faf8f5;
+            color: #3c3c3c;
+        }
+        
+        h3 {
+            font-size: 15px;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            color: #3c3c3c;
+            font-weight: bold;
+        }
+        
+        .bullet-item {
+            margin-left: 20px;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #2c2c2c;
+        }
+        
+        .bullet-item::before {
+            content: '•';
+            margin-right: 8px;
+            color: #8b7355;
+        }
+        
+        .sub-bullet {
+            margin-left: 40px;
+            margin-bottom: 5px;
+            font-size: 13px;
+            color: #4c4c4c;
+        }
+        
+        .sub-bullet::before {
+            content: '-';
+            margin-right: 8px;
+            color: #8b7355;
+        }
+        
+        .checklist {
+            background: #e5dfd5;
+            padding: 15px;
+            margin: 15px 0;
+            border: 1px solid #d4cfc5;
+        }
+        
+        .checklist-item {
+            margin-bottom: 8px;
+            font-size: 13px;
+            color: #2c2c2c;
+        }
+        
+        .conclusion {
+            background: #e5dfd5;
+            padding: 20px;
+            margin-top: 30px;
+            border-left: 4px solid #8b7355;
+            font-size: 14px;
+            line-height: 1.8;
+            color: #2c2c2c;
+        }
+        
+        .footer {
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 2px solid #8b7355;
+            text-align: center;
+        }
+        
+        .footer h2 {
+            font-size: 24px;
+            margin: 10px 0;
+            color: #2c2c2c;
+        }
+        
+        .footer h2::before {
+            content: '';
+            display: none;
+        }
+        
+        .footer-info {
+            font-size: 13px;
+            color: #5c5c5c;
+            margin-top: 10px;
+        }
+        
+        .section-number {
+            color: #8b7355;
+            font-size: 16px;
+            margin-right: 5px;
+        }
+        
+        /* 모바일 반응형 추가 */
+        @media screen and (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            body {
+                padding: 0;
+                background: #f5f0e8;
+            }
+
+            .container {
+                width: 100%;
+                min-height: auto;
+                padding: 60px 20px 20px 20px;
+                box-shadow: none;
+            }
+        }
+    </style>
+    <script>
+        function toggleMenu() {
+            document.querySelector('.sidebar').classList.toggle('active');
+        }
+    </script>
+</head>
+<body>
+    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+
+    <nav class="sidebar">
+        <div class="sidebar-header">📋 HAIM 보고서</div>
+        <ul class="sidebar-menu">
+            <li><a href="waste_management_report.html">폐기물 관리 효율화</a></li>
+            <li><a href="floor_marking_report.html" class="active">바닥 마킹 시스템</a></li>
+            <li><a href="seokgwan_equipment_list.html">석관 설비 리스트</a></li>
+        </ul>
+    </nav>
+
+    <div class="main-content">
+        <div class="container">
+            <h1>바닥 분필 마킹 시스템 도입 보고서</h1>
+            
+            <div class="subtitle">HAIM INTERIOR / 2025.11.13</div>
+            <div class="description">
+                바닥 철거 현장의 천정 설비 위치 사전 표기를 통한 시공 정확도 향상 방안
+            </div>
+
+            <h2><span class="section-number">1️⃣</span> 보고 목적</h2>
+            <div class="content-box">
+                바닥 철거 공정이 포함된 인테리어 현장에서 천정 감지기, 조명, 스프링클러 등 주요 설비 위치를 바닥 콘크리트면에 사전 표기하여 시공 오류를 예방하고 작업 효율성을 극대화하기 위함. 실장 및 주임 중심의 소규모 현장에 적합한 간편하고 실용적인 관리 시스템을 제안한다.
+            </div>
+
+            <h2><span class="section-number">2️⃣</span> 현황 및 문제점</h2>
+            <table>
+                <tr>
+                    <th>현장 특성</th>
+                    <td>바닥 철거 공정 포함 인테리어 현장, 철거 후 콘크리트면 노출</td>
+                </tr>
+                <tr>
+                    <th>인력 구조</th>
+                    <td>실장 1명 + 주임 1명 중심 관리</td>
+                </tr>
+                <tr>
+                    <th>주요 설비</th>
+                    <td>천정 감지기, 조명, 스프링클러, 덕트, 배관 등</td>
+                </tr>
+                <tr>
+                    <th>문제 상황</th>
+                    <td>바닥 마감 후 천정 설비 위치 파악 어려움 → 재시공 발생</td>
+                </tr>
+                <tr>
+                    <th>소통 제약</th>
+                    <td>전기·설비 협력업체와 위치 정보 공유 체계 부재</td>
+                </tr>
+            </table>
+
+            <h2><span class="section-number">3️⃣</span> 원인 분석</h2>
+            <div class="content-box">
+                <div class="bullet-item">바닥 마감 완료 후 천정 설비 기준점 소실</div>
+                <div class="bullet-item">도면과 현장 실측 위치 불일치 시 대응 곤란</div>
+                <div class="bullet-item">전기·설비 업체 투입 시점과 바닥 공정 시점 불일치</div>
+                <div class="bullet-item">구두 전달 또는 임시 메모에 의존하는 정보 공유 방식</div>
+            </div>
+
+            <h2><span class="section-number">4️⃣</span> 개선 방안</h2>
+            
+            <h3>(1) 바닥 분필 마킹 시스템 도입 — 철거 직후 즉시 표기</h3>
+            <div class="content-box">
+                바닥 철거가 완료되어 콘크리트면이 노출된 즉시, 실장 또는 주임이 현장에서 직접 천정 설비의 수직 투영 위치를 바닥에 분필로 표기한다.
+            </div>
+            
+            <div style="margin-left: 20px; margin-bottom: 15px;">
+                <strong style="font-size: 14px;">표기 대상:</strong>
+                <div class="sub-bullet">감지기 위치 (화재감지기, 연기감지기)</div>
+                <div class="sub-bullet">조명 기구 위치 (매입등, 다운라이트, 레일조명 등)</div>
+                <div class="sub-bullet">스프링클러 헤드 위치</div>
+                <div class="sub-bullet">환기구 및 덕트 개구부</div>
+                <div class="sub-bullet">전기 박스 및 배관 관통 구간</div>
+            </div>
+
+            <div style="margin-left: 20px; margin-bottom: 15px;">
+                <strong style="font-size: 14px;">표기 방식:</strong>
+                <div class="sub-bullet">분필 색상 구분 (예: 흰색=조명, 노란색=감지기, 빨간색=스프링클러)</div>
+                <div class="sub-bullet">간단한 기호 또는 약어 사용 (예: L1, DT, SP)</div>
+                <div class="sub-bullet">십자 표시 또는 원형 마킹으로 정확한 중심점 표기</div>
+            </div>
+
+            <h3>(2) 도면 대조 및 실측 병행 프로세스</h3>
+            <div class="content-box">
+                천정 도면을 기준으로 레이저 측정기 또는 줄자를 활용하여 정확한 위치를 실측한 후 바닥에 마킹한다. 도면상 위치와 현장 여건이 다를 경우 현장 실장이 최종 판단하여 조정 후 표기하고, 사진으로 기록 보관한다.
+            </div>
+
+            <h3>(3) 협력업체 간 정보 공유 체계 구축</h3>
+            <div class="content-box">
+                바닥 마킹 완료 후 사진 촬영하여 전기·설비 협력업체에 공유한다. 이를 통해 업체 투입 시점에 별도 측정 없이 마킹 위치를 기준으로 즉시 작업 착수 가능하다.
+            </div>
+
+            <h3>(4) 마킹 보호 및 유지 관리</h3>
+            <div class="content-box">
+                <div class="bullet-item">바닥 마감 공정 전까지 마킹이 지워지지 않도록 관리</div>
+                <div class="bullet-item">필요 시 방수 스프레이 또는 투명 테이프로 보호</div>
+                <div class="bullet-item">공정 중 마킹 훼손 시 즉시 재표기</div>
+            </div>
+
+            <h3>(5) 체크리스트 작성 및 기록 관리</h3>
+            <div class="content-box">
+                마킹 완료 후 간단한 체크리스트를 작성하여 누락 방지 및 추후 검증 자료로 활용한다.
+            </div>
+
+            <div class="checklist">
+                <strong>체크리스트 예시:</strong>
+                <div class="checklist-item">□ 감지기 위치 표기 완료</div>
+                <div class="checklist-item">□ 조명 위치 표기 완료</div>
+                <div class="checklist-item">□ 스프링클러 위치 표기 완료</div>
+                <div class="checklist-item">□ 사진 촬영 및 공유 완료</div>
+                <div class="checklist-item">□ 협력업체 확인 완료</div>
+            </div>
+
+            <h2><span class="section-number">5️⃣</span> 기대효과</h2>
+            <table>
+                <tr>
+                    <th>시공 정확도</th>
+                    <td>천정 설비 위치 오류 최소화, 재시공 방지</td>
+                </tr>
+                <tr>
+                    <th>소통 개선</th>
+                    <td>실장-협력업체 간 명확한 시각적 정보 공유</td>
+                </tr>
+                <tr>
+                    <th>관리 효율</th>
+                    <td>간편한 체크리스트로 누락 방지 및 품질 관리</td>
+                </tr>
+            </table>
+
+            <h2><span class="section-number">6️⃣</span> 실행 가이드</h2>
+            
+            <h3>준비물</h3>
+            <div class="content-box">
+                <div class="bullet-item">분필 (백색, 황색, 적색 등 색상별 구비)</div>
+                <div class="bullet-item">레이저 측정기 또는 줄자</div>
+                <div class="bullet-item">천정 설비 도면 (종이 또는 태블릿)</div>
+                <div class="bullet-item">스마트폰 (사진 촬영용)</div>
+            </div>
+
+            <h3>작업 순서</h3>
+            <div class="checklist">
+                <div class="checklist-item">1. 바닥 철거 완료 및 콘크리트면 청소</div>
+                <div class="checklist-item">2. 천정 도면 확인 및 현장 실측</div>
+                <div class="checklist-item">3. 바닥에 설비 위치 분필 마킹</div>
+                <div class="checklist-item">4. 마킹 완료 사진 촬영</div>
+                <div class="checklist-item">5. 협력업체에 사진 공유 및 확인 요청</div>
+                <div class="checklist-item">6. 체크리스트 작성 및 보관</div>
+            </div>
+
+            <h2><span class="section-number">7️⃣</span> 결론</h2>
+            <div class="conclusion">
+                바닥 철거 공정에서 콘크리트면 노출 시점을 활용한 분필 마킹 시스템은 최소한의 비용과 시간으로 천정 설비 시공의 정확도를 획기적으로 향상시킬 수 있는 실용적인 방법이다. 실장·주임 중심의 소규모 현장에서도 즉시 적용 가능하며, 협력업체와의 원활한 소통을 통해 공사 품질과 효율성을 동시에 개선할 수 있다. 이 시스템은 현장 관리의 체계화와 스마트화를 위한 첫걸음으로 평가된다.
+            </div>
+
+            <div class="footer">
+                <h2>HAIM INTERIOR</h2>
+                <div class="footer-info">
+                    담당자: 최동인 주임<br>
+                    날짜: 2025.11.13
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
