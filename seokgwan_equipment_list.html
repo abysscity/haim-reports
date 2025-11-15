@@ -73,7 +73,7 @@
             font-weight: bold;
         }
         
-        /* 로그아웃 버튼 추가 */
+        /* 로그아웃 버튼 */
         .logout-btn {
             margin-top: 30px;
             padding: 12px;
@@ -105,6 +105,21 @@
             cursor: pointer;
             font-size: 20px;
         }
+
+        /* 오버레이 */
+		.overlay {
+			display: none;
+			position: fixed;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			background: rgba(0,0,0,0.5);
+			z-index: 999;
+		}
+		.overlay.active {
+			display: block;
+		}
 
         /* 메인 콘텐츠 영역 */
         .main-content {
@@ -248,21 +263,6 @@
             margin-top: 10px;
         }
 
-        /* 오버레이 추가 */
-		.overlay {
-			display: none;
-			position: fixed;
-			top: 0;
-			left: 0;
-			right: 0;
-			bottom: 0;
-			background: rgba(0,0,0,0.5);
-			z-index: 999;
-		}
-		.overlay.active {
-			display: block;
-		}
-
         @media screen and (max-width: 768px) {
             .sidebar {
                 transform: translateX(-100%);
@@ -350,18 +350,18 @@
         }
     </style>
     <script>
-        // 로그인 체크 (index.html에서 복사)
+        // 로그인 체크 (index.html과 동일)
         if (localStorage.getItem('haim_logged_in') !== 'true') {
             window.location.href = 'login.html';
         }
 
-        // 로그아웃 (index.html에서 복사)
+        // 로그아웃 (index.html과 동일)
         function logout() {
             localStorage.removeItem('haim_logged_in');
             window.location.href = 'login.html';
         }
 
-        // 사이드바 토글 (index.html에서 복사)
+        // 사이드바 토글 (index.html과 동일)
         function toggleMenu() {
             const sidebar = document.getElementById('sidebar');
             const overlay = document.getElementById('overlay');
