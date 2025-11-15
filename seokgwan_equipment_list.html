@@ -72,6 +72,23 @@
             color: #f5f0e8;
             font-weight: bold;
         }
+        
+        /* 로그아웃 버튼 추가 */
+        .logout-btn {
+            margin-top: 30px;
+            padding: 12px;
+            background: #8b7355;
+            color: #f5f0e8;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .logout-btn:hover {
+            background: #6d5942;
+        }
 
         /* 햄버거 메뉴 버튼 */
         .menu-toggle {
@@ -231,6 +248,21 @@
             margin-top: 10px;
         }
 
+        /* 오버레이 추가 */
+		.overlay {
+			display: none;
+			position: fixed;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			background: rgba(0,0,0,0.5);
+			z-index: 999;
+		}
+		.overlay.active {
+			display: block;
+		}
+
         @media screen and (max-width: 768px) {
             .sidebar {
                 transform: translateX(-100%);
@@ -318,23 +350,41 @@
         }
     </style>
     <script>
+        // 로그인 체크 (index.html에서 복사)
+        if (localStorage.getItem('haim_logged_in') !== 'true') {
+            window.location.href = 'login.html';
+        }
+
+        // 로그아웃 (index.html에서 복사)
+        function logout() {
+            localStorage.removeItem('haim_logged_in');
+            window.location.href = 'login.html';
+        }
+
+        // 사이드바 토글 (index.html에서 복사)
         function toggleMenu() {
-            document.querySelector('.sidebar').classList.toggle('active');
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('overlay');
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
         }
     </script>
 </head>
 <body>
     <button class="menu-toggle" onclick="toggleMenu()">☰</button>
 
-    <nav class="sidebar">
+    <nav class="sidebar" id="sidebar">
         <div class="sidebar-header">📋 HAIM 보고서</div>
         <ul class="sidebar-menu">
+            <li><a href="index.html">작업 현황</a></li>
             <li><a href="waste_management_report.html">폐기물 관리 효율화</a></li>
             <li><a href="floor_marking_report.html">바닥 마킹 시스템</a></li>
             <li><a href="seokgwan_equipment_list.html" class="active">석관 설비 리스트</a></li>
-            <li><a href="index.html">작업 현황</a></li>
         </ul>
+        <button class="logout-btn" onclick="logout()">로그아웃</button>
     </nav>
+    
+    <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
 
     <div class="main-content">
     <div class="container">
