@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HAIM INTERIOR - 로그인</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Malgun Gothic', sans-serif;
+            background: #525659;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 450px;
+            background: #f5f0e8;
+            padding: 50px 40px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
+            border-radius: 10px;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .logo h1 {
+            font-size: 32px;
+            color: #2c2c2c;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .logo p {
+            color: #8b7355;
+            font-size: 14px;
+        }
+
+        .login-form {
+            margin-top: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #3c3c3c;
+            font-size: 14px;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #d4cfc5;
+            background: #faf8f5;
+            border-radius: 5px;
+            font-size: 16px;
+            color: #2c2c2c;
+            transition: border 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #8b7355;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 15px;
+            background: #8b7355;
+            color: #f5f0e8;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .login-btn:hover {
+            background: #6d5942;
+        }
+
+        .error-message {
+            color: #c44536;
+            font-size: 13px;
+            margin-top: 10px;
+            text-align: center;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .info-text {
+            text-align: center;
+            color: #5c5c5c;
+            font-size: 12px;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #d4cfc5;
+        }
+
+        @media screen and (max-width: 480px) {
+            .login-container {
+                padding: 40px 30px;
+            }
+
+            .logo h1 {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="logo">
+            <h1>HAIM INTERIOR</h1>
+            <p>현장 관리 시스템</p>
+        </div>
+
+        <form class="login-form" onsubmit="return handleLogin(event)">
+            <div class="form-group">
+                <label for="password">비밀번호</label>
+                <input 
+                    type="password" 
+                    id="password" 
+                    placeholder="비밀번호를 입력하세요"
+                    required
+                >
+            </div>
+
+            <button type="submit" class="login-btn">로그인</button>
+            
+            <div class="error-message" id="errorMessage">
+                비밀번호가 올바르지 않습니다.
+            </div>
+        </form>
+
+        <div class="info-text">
+            © 2025 HAIM INTERIOR. All rights reserved.
+        </div>
+    </div>
+
+    <script>
+        const CORRECT_PASSWORD = 'haim1225';
+
+        function handleLogin(event) {
+            event.preventDefault();
+            
+            const password = document.getElementById('password').value;
+            const errorMessage = document.getElementById('errorMessage');
+
+            if (password === CORRECT_PASSWORD) {
+                // 로그인 성공
+                localStorage.setItem('haim_logged_in', 'true');
+                window.location.href = 'weekly_schedule.html';
+            } else {
+                // 로그인 실패
+                errorMessage.classList.add('show');
+                document.getElementById('password').value = '';
+                
+                setTimeout(() => {
+                    errorMessage.classList.remove('show');
+                }, 3000);
+            }
+
+            return false;
+        }
+
+        // 이미 로그인되어 있으면 대시보드로 이동
+        if (localStorage.getItem('haim_logged_in') === 'true') {
+            window.location.href = 'dashboard.html';
+        }
+    </script>
+</body>
+</html>
