@@ -1,0 +1,96 @@
+<!-- sidebar.html -->
+<div class="sidebar">
+  <div class="sidebar-header">
+    <h2>HAIM Reports</h2>
+    <button class="close-btn" onclick="toggleSidebar()">×</button>
+  </div>
+  
+  <nav class="sidebar-nav">
+    <ul>
+      <li><a href="dashboard.html">대시보드</a></li>
+      <li><a href="reports.html">리포트</a></li>
+      <li><a href="analytics.html">분석</a></li>
+      <li><a href="settings.html">설정</a></li>
+      <li><a href="logout.html">로그아웃</a></li>
+    </ul>
+  </nav>
+</div>
+
+<style>
+.sidebar {
+  position: fixed;
+  left: -250px;
+  top: 0;
+  width: 250px;
+  height: 100vh;
+  background-color: #2c3e50;
+  color: white;
+  transition: left 0.3s ease;
+  z-index: 1000;
+  overflow-y: auto;
+}
+
+.sidebar.active {
+  left: 0;
+}
+
+.sidebar-header {
+  padding: 20px;
+  border-bottom: 1px solid #34495e;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sidebar-header h2 {
+  margin: 0;
+  font-size: 1.5em;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 2em;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+}
+
+.sidebar-nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-nav li {
+  border-bottom: 1px solid #34495e;
+}
+
+.sidebar-nav a {
+  display: block;
+  padding: 15px 20px;
+  color: white;
+  text-decoration: none;
+  transition: background-color 0.3s;
+}
+
+.sidebar-nav a:hover {
+  background-color: #34495e;
+}
+
+.sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: none;
+  z-index: 999;
+}
+
+.sidebar-overlay.active {
+  display: block;
+}
+</style>
