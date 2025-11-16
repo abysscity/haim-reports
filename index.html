@@ -17,92 +17,7 @@
 			background: #525659;
 			overflow: hidden;
 		}
-
-		/* 사이드바 스타일 */
-		.sidebar {
-			width: 250px;
-			background: #2c2c2c;
-			height: 100vh;
-			position: fixed;
-			left: 0;
-			top: 0;
-			padding: 20px;
-			overflow-y: auto;
-			transition: transform 0.3s;
-			z-index: 1000;
-		}
-
-		.sidebar-header {
-			color: #f5f0e8;
-			font-size: 18px;
-			font-weight: bold;
-			margin-bottom: 30px;
-			padding-bottom: 15px;
-			border-bottom: 2px solid #8b7355;
-		}
-
-		.sidebar-menu {
-			list-style: none;
-		}
-
-		.sidebar-menu li {
-			margin-bottom: 10px;
-		}
-
-		.sidebar-menu a {
-			display: block;
-			color: #d4cfc5;
-			text-decoration: none;
-			padding: 12px 15px;
-			border-radius: 5px;
-			transition: all 0.3s;
-			font-size: 14px;
-		}
-
-		.sidebar-menu a:hover {
-			background: #8b7355;
-			color: #f5f0e8;
-		}
-
-		.sidebar-menu a.active {
-			background: #8b7355;
-			color: #f5f0e8;
-			font-weight: bold;
-		}
-
-		/* 로그아웃 버튼 */
-		.logout-btn {
-			margin-top: 30px;
-			padding: 12px;
-			background: #8b7355;
-			color: #f5f0e8;
-			border: none;
-			border-radius: 5px;
-			cursor: pointer;
-			width: 100%;
-			font-size: 14px;
-			font-weight: bold;
-		}
-		.logout-btn:hover {
-			background: #6d5942;
-		}
-
-		/* 햄버거 메뉴 버튼 */
-		.menu-toggle {
-			display: none;
-			position: fixed;
-			top: 20px;
-			left: 20px;
-			z-index: 1001;
-			background: #8b7355;
-			color: #f5f0e8;
-			border: none;
-			padding: 10px 15px;
-			border-radius: 5px;
-			cursor: pointer;
-			font-size: 20px;
-		}
-
+		
 		/* 메인 컨텐츠 영역 */
 		.main-content {
 			margin-left: 250px;
@@ -243,19 +158,6 @@
 	</style>
 </head>
 <body>
-	<button class="menu-toggle" onclick="toggleMenu()">☰</button>
-
-	<nav class="sidebar" id="sidebar">
-		<div class="sidebar-header">📋 HAIM 보고서</div>
-		<ul class="sidebar-menu">
-			<li><a href="index.html" class="active">작업 현황</a></li>
-			<li><a href="waste_management_report.html">폐기물 관리 효율화</a></li>
-			<li><a href="floor_marking_report.html">바닥 마킹 시스템</a></li>
-			<li><a href="seokgwan_equipment_list.html">석관 설비 리스트</a></li>
-		</ul>
-		<button class="logout-btn" onclick="logout()">로그아웃</button>
-	</nav>
-
 	<div class="overlay" id="overlay" onclick="toggleMenu()"></div>
 
 	<div class="main-content">
@@ -286,13 +188,6 @@
 			localStorage.removeItem('haim_logged_in');
 			window.location.href = 'login.html';
 		}
-
-		// 사이드바 토글
-		function toggleMenu() {
-			const sidebar = document.getElementById('sidebar');
-			const overlay = document.getElementById('overlay');
-			sidebar.classList.toggle('active');
-			overlay.classList.toggle('active');
 		}
 	</script>
 </body>
