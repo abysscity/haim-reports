@@ -3,11 +3,15 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>하임인테리어 작업 현황</title>
+	<title>석관 현장 설비 리스트</title>
 	<script src="sidebar-loader.js"></script>
 	
 	<style>
 		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
         
         body {
             font-family: 'Malgun Gothic', sans-serif;
@@ -15,24 +19,15 @@
             padding: 0;
             margin: 0;
             line-height: 1.6;
-            display: flex;
-            min-height: 100vh;
         }
-
-        /* 오버레이 */
-		.overlay {
-			display: none;
-			position: fixed;
-			top: 0;
-			left: 0;
-			right: 0;
-			bottom: 0;
-			background: rgba(0,0,0,0.5);
-			z-index: 999;
-		}
-		.overlay.active {
-			display: block;
-		}
+        
+        /* ✅ 메인 콘텐츠 중앙 정렬 */
+        .main-content {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 40px 20px;
+        }
         
         .container {
             width: 21cm;
@@ -40,6 +35,7 @@
             background: #f5f0e8;
             padding: 2cm;
             box-shadow: 0 0 10px rgba(0,0,0,0.3);
+            margin: 0 auto;
         }
         
         h1 {
@@ -167,31 +163,19 @@
         }
 
         @media screen and (max-width: 768px) {
-            .sidebar {
-                transform: translateX(-100%);
-            }
-
-            .sidebar.active {
-                transform: translateX(0);
-            }
-
-            .menu-toggle {
-                display: block;
-            }
-
-            .main-content {
-                margin-left: 0;
-            }
-
             body {
                 padding: 0;
                 background: #f5f0e8;
             }
 
+            .main-content {
+                padding: 20px;
+            }
+
             .container {
                 width: 100%;
                 min-height: auto;
-                padding: 60px 20px 20px 20px;
+                padding: 20px;
                 box-shadow: none;
             }
 
@@ -253,149 +237,146 @@
         }
     </style>
     <script>
-        // 로그인 체크 (index.html과 동일)
+        // 로그인 체크
         if (localStorage.getItem('haim_logged_in') !== 'true') {
             window.location.href = 'login.html';
         }
 
-        // 로그아웃 (index.html과 동일)
+        // 로그아웃
         function logout() {
             localStorage.removeItem('haim_logged_in');
             window.location.href = 'login.html';
         }
-
     </script>
 </head>
 <body>
-    <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
-
     <div class="main-content">
-    <div class="container">
-        <h1>석관 현장 설비 리스트업 보고서</h1>
-        
-        <div class="subtitle">HAIM INTERIOR / 2025.11.13</div>
-        <div class="description">
-            석관 현장의 천정, 벽면 및 욕실 설비 목록 정리
-        </div>
+        <div class="container">
+            <h1>석관 현장 설비 리스트업 보고서</h1>
+            
+            <div class="subtitle">HAIM INTERIOR / 2025.11.13</div>
+            <div class="description">
+                석관 현장의 천정, 벽면 및 욕실 설비 목록 정리
+            </div>
 
-        <h2>천정 리스트업</h2>
-        
-        <div class="list-section">
-            <div class="category-title">감지기</div>
-            <div class="list-item">
-                <span class="item-name">정온식 감지기</span>
-                <span class="item-quantity">3개</span>
+            <h2>천정 리스트업</h2>
+            
+            <div class="list-section">
+                <div class="category-title">감지기</div>
+                <div class="list-item">
+                    <span class="item-name">정온식 감지기</span>
+                    <span class="item-quantity">3개</span>
+                </div>
+                <div class="list-item">
+                    <span class="item-name">가스 감지기</span>
+                    <span class="item-quantity">1개</span>
+                </div>
+                <div class="list-item">
+                    <span class="item-name">차동식 감지기</span>
+                    <span class="item-quantity">3개</span>
+                </div>
             </div>
-            <div class="list-item">
-                <span class="item-name">가스 감지기</span>
-                <span class="item-quantity">1개</span>
-            </div>
-            <div class="list-item">
-                <span class="item-name">차동식 감지기</span>
-                <span class="item-quantity">3개</span>
-            </div>
-        </div>
 
-        <div class="list-section">
-            <div class="category-title">조명 및 센서</div>
-            <div class="list-item">
-                <span class="item-name">026-01-176 (거실)</span>
+            <div class="list-section">
+                <div class="category-title">조명 및 센서</div>
+                <div class="list-item">
+                    <span class="item-name">026-01-176 (거실)</span>
+                </div>
+                <div class="list-item">
+                    <span class="item-name">226-03-030 센서 (세탁실)</span>
+                </div>
+                <div class="list-item">
+                    <span class="item-name">226-04-024 (직부)</span>
+                    <span class="item-quantity">2개</span>
+                </div>
+                <div class="list-item">
+                    <span class="item-name">213-08-164 (전실)</span>
+                </div>
             </div>
-            <div class="list-item">
-                <span class="item-name">226-03-030 센서 (세탁실)</span>
-            </div>
-            <div class="list-item">
-                <span class="item-name">226-04-024 (직부)</span>
-                <span class="item-quantity">2개</span>
-            </div>
-            <div class="list-item">
-                <span class="item-name">213-08-164 (전실)</span>
-            </div>
-        </div>
 
-        <div class="list-section">
-            <div class="category-title">주문 제품</div>
-            <div class="product-item">
-                <a href="https://smartstore.naver.com/happylamp/products/5204162330?nl-au=380b0eaa69d44ad4bcbb62c29d911d9d&nl-query=%EC%98%A4%EC%8A%A4%EB%9E%8C+%EB%B0%A9%EB%93%B1" target="_blank">오스람 방등 (사이즈별 주문 가능)</a>
-                <span class="product-price">18,900원</span>
+            <div class="list-section">
+                <div class="category-title">주문 제품</div>
+                <div class="product-item">
+                    <a href="https://smartstore.naver.com/happylamp/products/5204162330?nl-au=380b0eaa69d44ad4bcbb62c29d911d9d&nl-query=%EC%98%A4%EC%8A%A4%EB%9E%8C+%EB%B0%A9%EB%93%B1" target="_blank">오스람 방등 (사이즈별 주문 가능)</a>
+                    <span class="product-price">18,900원</span>
+                </div>
+                <div class="product-item">
+                    <a href="https://smartstore.naver.com/mood_lighting/products/7145289370?NaPm=ct%3Dmhzmvkxk%7Cci%3D019eef9f578dc394ccf4bef7817cff3d3cfde8ef%7Ctr%3Dslsl%7Csn%3D3955179%7Chk%3D3e484250a868027aa05c9764ddf23081c25d60cc&nl-au=b59c624fa04e4e27a5c5f425710b07fb&nl-query=%EC%A1%B0%EB%AA%85+%EB%A6%AC%EB%AA%A8%EC%BB%A8+%EC%88%98%EC%8B%A0%EA%B8%B0" target="_blank">방등 리모컨</a>
+                    <span class="product-price">9,900원</span>
+                </div>
             </div>
-            <div class="product-item">
-                <a href="https://smartstore.naver.com/mood_lighting/products/7145289370?NaPm=ct%3Dmhzmvkxk%7Cci%3D019eef9f578dc394ccf4bef7817cff3d3cfde8ef%7Ctr%3Dslsl%7Csn%3D3955179%7Chk%3D3e484250a868027aa05c9764ddf23081c25d60cc&nl-au=b59c624fa04e4e27a5c5f425710b07fb&nl-query=%EC%A1%B0%EB%AA%85+%EB%A6%AC%EB%AA%A8%EC%BB%A8+%EC%88%98%EC%8B%A0%EA%B8%B0" target="_blank">방등 리모컨</a>
-                <span class="product-price">9,900원</span>
-            </div>
-        </div>
 
-        <h2>벽 리스트업</h2>
-        
-        <div class="list-section">
-            <div class="category-title">세로형</div>
-            <div class="list-item">
-                <span class="item-name">2구 콘센트</span>
-                <span class="item-quantity">9개</span>
+            <h2>벽 리스트업</h2>
+            
+            <div class="list-section">
+                <div class="category-title">세로형</div>
+                <div class="list-item">
+                    <span class="item-name">2구 콘센트</span>
+                    <span class="item-quantity">9개</span>
+                </div>
+                <div class="list-item">
+                    <span class="item-name">2구 방우</span>
+                    <span class="item-quantity">3개</span>
+                </div>
+                <div class="list-item">
+                    <span class="item-name">CATV</span>
+                    <span class="item-quantity">2개</span>
+                </div>
+                <div class="list-item">
+                    <span class="item-name">분전반 4구 메인</span>
+                    <span class="item-quantity">1개</span>
+                </div>
+                <div class="list-item">
+                    <span class="item-name">3구 스위치</span>
+                    <span class="item-quantity">2개</span>
+                </div>
+                <div class="list-item">
+                    <span class="item-name">2구 스위치</span>
+                    <span class="item-quantity">1개</span>
+                </div>
+                <div class="list-item">
+                    <span class="item-name">1구 스위치</span>
+                    <span class="item-quantity">2개</span>
+                </div>
             </div>
-            <div class="list-item">
-                <span class="item-name">2구 방우</span>
-                <span class="item-quantity">3개</span>
-            </div>
-            <div class="list-item">
-                <span class="item-name">CATV</span>
-                <span class="item-quantity">2개</span>
-            </div>
-            <div class="list-item">
-                <span class="item-name">분전반 4구 메인</span>
-                <span class="item-quantity">1개</span>
-            </div>
-            <div class="list-item">
-                <span class="item-name">3구 스위치</span>
-                <span class="item-quantity">2개</span>
-            </div>
-            <div class="list-item">
-                <span class="item-name">2구 스위치</span>
-                <span class="item-quantity">1개</span>
-            </div>
-            <div class="list-item">
-                <span class="item-name">1구 스위치</span>
-                <span class="item-quantity">2개</span>
-            </div>
-        </div>
 
-        <h2>욕실</h2>
-        
-        <div class="list-section">
-            <div class="product-item">
-                <a href="https://dreambath.co.kr/product/detail.html?product_no=4837&cate_no=74&display_group=1" target="_blank">수건 걸이</a>
-                <span class="product-price">16,500원</span>
+            <h2>욕실</h2>
+            
+            <div class="list-section">
+                <div class="product-item">
+                    <a href="https://dreambath.co.kr/product/detail.html?product_no=4837&cate_no=74&display_group=1" target="_blank">수건 걸이</a>
+                    <span class="product-price">16,500원</span>
+                </div>
+                <div class="product-item">
+                    <a href="https://dreambath.co.kr/product/detail.html?product_no=4889&cate_no=366&display_group=1" target="_blank">일자 선반</a>
+                    <span class="product-price">29,000원</span>
+                </div>
+                <div class="product-item">
+                    <a href="https://dreambath.co.kr/product/detail.html?product_no=4938&cate_no=231&display_group=1" target="_blank">유리 선반</a>
+                    <span class="product-price">26,000원</span>
+                </div>
+                <div class="product-item">
+                    <a href="https://dreambath.co.kr/product/detail.html?product_no=5460&cate_no=58&display_group=1" target="_blank">유리</a>
+                    <span class="product-price">22,500원</span>
+                </div>
+                <div class="product-item">
+                    <a href="https://dreambath.co.kr/product/detail.html?product_no=4653&cate_no=27&display_group=1" target="_blank">수건장</a>
+                    <span class="product-price">74,500원</span>
+                </div>
+                <div class="product-item">
+                    <a href="https://smartstore.naver.com/5penmk/products/5375872984?nl-ts-pid=jekcllqWnPk8bcdZV5V-247385&n_media=33421&n_query=%EC%84%B8%ED%83%81%EA%B8%B0%EC%88%98%EB%8F%84%EA%BC%AD%EC%A7%80&n_rank=1&n_ad_group=grp-a001-02-000000019611775&n_ad=nad-a001-02-000000121712688&n_campaign_type=2&n_mall_id=5penmk&n_mall_pid=5375872984&n_ad_group_type=2&n_match=3&nl-au=3e86c5c6ff4046a495c5227c0f1b992f" target="_blank">발코니, 세탁실 수전</a>
+                    <span class="product-price">5,400원</span>
+                </div>
             </div>
-            <div class="product-item">
-                <a href="https://dreambath.co.kr/product/detail.html?product_no=4889&cate_no=366&display_group=1" target="_blank">일자 선반</a>
-                <span class="product-price">29,000원</span>
-            </div>
-            <div class="product-item">
-                <a href="https://dreambath.co.kr/product/detail.html?product_no=4938&cate_no=231&display_group=1" target="_blank">유리 선반</a>
-                <span class="product-price">26,000원</span>
-            </div>
-            <div class="product-item">
-                <a href="https://dreambath.co.kr/product/detail.html?product_no=5460&cate_no=58&display_group=1" target="_blank">유리</a>
-                <span class="product-price">22,500원</span>
-            </div>
-            <div class="product-item">
-                <a href="https://dreambath.co.kr/product/detail.html?product_no=4653&cate_no=27&display_group=1" target="_blank">수건장</a>
-                <span class="product-price">74,500원</span>
-            </div>
-            <div class="product-item">
-                <a href="https://smartstore.naver.com/5penmk/products/5375872984?nl-ts-pid=jekcllqWnPk8bcdZV5V-247385&n_media=33421&n_query=%EC%84%B8%ED%83%81%EA%B8%B0%EC%88%98%EB%8F%84%EA%BC%AD%EC%A7%80&n_rank=1&n_ad_group=grp-a001-02-000000019611775&n_ad=nad-a001-02-000000121712688&n_campaign_type=2&n_mall_id=5penmk&n_mall_pid=5375872984&n_ad_group_type=2&n_match=3&nl-au=3e86c5c6ff4046a495c5227c0f1b992f" target="_blank">발코니, 세탁실 수전</a>
-                <span class="product-price">5,400원</span>
-            </div>
-        </div>
 
-        <div class="footer">
-            <h2>HAIM INTERIOR</h2>
-            <div class="footer-info">
-                담당자: 최동인 주임<br>
-                날짜: 2025.11.13
+            <div class="footer">
+                <h2>HAIM INTERIOR</h2>
+                <div class="footer-info">
+                    담당자: 최동인 주임<br>
+                    날짜: 2025.11.13
+                </div>
             </div>
         </div>
-    </div>
     </div>
 </body>
 </html>
