@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="ko">
-    <script src="sidebar-loader.js"></script>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>바닥 분필 마킹 시스템 도입 보고서</title>
+    
+    <!-- ✅ 사이드바 로더만 남기기 -->
+    <script src="sidebar-loader.js"></script>
+    
     <style>
         * {
             margin: 0;
@@ -18,82 +21,10 @@
             padding: 0;
             margin: 0;
             line-height: 1.6;
-            display: flex;
-            min-height: 100vh; /* 전체 화면 높이 사용 */
         }
         
-        /* 사이드바 스타일 (추가/수정) */
-        .sidebar {
-            width: 250px;
-            background: #2c2c2c;
-            height: 100vh;
-            position: fixed;
-            left: 0;
-            top: 0;
-            padding: 20px;
-            overflow-y: auto;
-            transition: transform 0.3s;
-            z-index: 1000;
-        }
-
-        .sidebar-header {
-            color: #f5f0e8;
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 30px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #8b7355;
-        }
-
-        .sidebar-menu {
-            list-style: none;
-        }
-
-        .sidebar-menu li {
-            margin-bottom: 10px;
-        }
-
-        .sidebar-menu a {
-            display: block;
-            color: #d4cfc5;
-            text-decoration: none;
-            padding: 12px 15px;
-            border-radius: 5px;
-            transition: all 0.3s;
-            font-size: 14px;
-        }
-
-        .sidebar-menu a:hover {
-            background: #8b7355;
-            color: #f5f0e8;
-        }
-
-        .sidebar-menu a.active {
-            background: #8b7355;
-            color: #f5f0e8;
-            font-weight: bold;
-        }
-        
-        /* 햄버거 메뉴 버튼 */
-        .menu-toggle {
-            display: none;
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            z-index: 1001;
-            background: #8b7355;
-            color: #f5f0e8;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 20px;
-        }
-        
-        /* 메인 콘텐츠 영역 (수정) */
+        /* ✅ 메인 콘텐츠 - 사이드바 관련 마진 제거 */
         .main-content {
-            margin-left: 250px; /* 사이드바 너비만큼 왼쪽 마진 설정 */
-            flex: 1;
             display: flex;
             justify-content: center;
             align-items: flex-start;
@@ -272,24 +203,8 @@
             margin-right: 5px;
         }
         
-        /* 모바일 반응형 추가 */
+        /* ✅ 모바일 반응형 - 사이드바 관련 제거 */
         @media screen and (max-width: 768px) {
-            .sidebar {
-                transform: translateX(-100%);
-            }
-
-            .sidebar.active {
-                transform: translateX(0);
-            }
-
-            .menu-toggle {
-                display: block;
-            }
-
-            .main-content {
-                margin-left: 0;
-            }
-
             body {
                 padding: 0;
                 background: #f5f0e8;
@@ -298,29 +213,15 @@
             .container {
                 width: 100%;
                 min-height: auto;
-                padding: 60px 20px 20px 20px;
+                padding: 20px;
                 box-shadow: none;
             }
         }
     </style>
-    <script>
-        function toggleMenu() {
-            document.querySelector('.sidebar').classList.toggle('active');
-        }
-    </script>
 </head>
 <body>
-    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
-
-    <nav class="sidebar">
-        <div class="sidebar-header">📋 HAIM 보고서</div>
-        <ul class="sidebar-menu">
-            <li><a href="waste_management_report.html">폐기물 관리 효율화</a></li>
-            <li><a href="floor_marking_report.html" class="active">바닥 마킹 시스템</a></li>
-            <li><a href="seokgwan_equipment_list.html">석관 설비 리스트</a></li>
-            <li><a href="index.html">작업 현황</a></li>
-        </ul>
-    </nav>
+    <!-- ❌ 기존 햄버거 버튼 삭제됨 -->
+    <!-- ❌ 기존 사이드바 nav 삭제됨 -->
 
     <div class="main-content">
         <div class="container">
@@ -474,4 +375,3 @@
     </div>
 </body>
 </html>
-
